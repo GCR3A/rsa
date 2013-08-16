@@ -82,6 +82,7 @@ int main() {
 
     /* generate primes that satisfy gcd( (p-1)(q-1), 65537 ) == 1 and high order bits are set */
     do {
+        // bc i have /dev/urandom openssl takes care of seeding
         BN_generate_prime(p,512,1,NULL,NULL,NULL,NULL);
         BN_generate_prime(q,512,1,NULL,NULL,NULL,NULL);
         BN_sub(pMinus,p,BN_value_one());
@@ -102,20 +103,22 @@ int main() {
     // on return. switched var takes care of that for us. if
     // switched is 1 then x will be d instead of y
     int switched = bignum_gcd(phiN,e,GCD,x,y,ctx);
-    if (switched) {
+    /*if (switched) {
         // use x for d
         BN_copy(d,x);
     }
     else
         BN_copy(d,y);
-
+*/
     /* print all the things!! */
     printf("p: %s\n",BN_bn2dec(p));
     printf("q: %s\n\n",BN_bn2dec(q));
     printf("n: %s\n",BN_bn2dec(n));
     printf("phi(n): %s\n\n",BN_bn2dec(phiN));
     printf("e: %s\n",BN_bn2dec(e));
-    printf("d: %s\n",BN_bn2dec(d));
+    printf("x: %s\n",BN_bn2dec(x));
+    printf("y: %s\n",BN_bn2dec(y));
+    printf("the positive one is d\n");
     printf("gcd(phi(n),e): %s\n\n",BN_bn2dec(GCD));
 
     /* free all the things!! */
